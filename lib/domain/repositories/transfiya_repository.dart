@@ -1,8 +1,8 @@
 import '../entities/index.dart';
 
 abstract class TransfiyaRepository {
-  Future<bool> activarUsuario(ParametrosActivarUsuario params);
+  Future<bool?> activarUsuario(ParametrosActivarUsuario params);
 
-  Future<RespuestaCosultarTransacciones> consultarTransacciones(
+  Future<RespuestaCosultarTransacciones?> consultarTransacciones(
       ParametrosConsultarTransacciones params);
 }

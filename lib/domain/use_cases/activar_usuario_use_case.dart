@@ -7,7 +7,7 @@ class ActivarUsuarioUseCase {
 
   final TransfiyaRepository _transfiyaRepository;
 
-  Future<bool> call(ParametrosActivarUsuario params) async {
+  Future<bool?> call(ParametrosActivarUsuario params) async {
     return await _transfiyaRepository.activarUsuario(params);
   }
 }

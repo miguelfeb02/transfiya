@@ -3,6 +3,10 @@
 import 'package:flutter/material.dart';
 
 abstract class MySingletonSharedPreferences {
+  String? get token => token;
+
+  set token(String? token);
+
   Color? get primaryColorLigth => primaryColorLigth;
 
   set primaryColorLigth(Color? primaryColorLigth);
@@ -20,6 +24,9 @@ class MySingleton implements MySingletonSharedPreferences {
   }
 
   MySingleton._internal();
+
+  @override
+  String? token;
 
   @override
   Color? primaryColorLigth;
