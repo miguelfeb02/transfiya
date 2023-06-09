@@ -2,13 +2,16 @@ import '../../domain/index.dart';
 import '../index.dart';
 
 class TransfiyaRepositoryAdapter implements TransfiyaRepository {
-  final TransfiyaDataSource dataSource;
-
-  TransfiyaRepositoryAdapter(this.dataSource);
+  final ActivarUsuarioApiSource activarUsuarioApiSource;
+  final ConsultarTransaccionesApiSource consultarTransaccionesApiSource;
+  TransfiyaRepositoryAdapter(
+    this.activarUsuarioApiSource,
+    this.consultarTransaccionesApiSource,
+  );
 
   @override
   Future<bool?> activarUsuario(ParametrosActivarUsuario params) async {
-    final resultadoApi = await dataSource.activarUsuario();
+    final resultadoApi = await activarUsuarioApiSource.activarUsuario(params);
 
     if (ValidateStatusEnum.validateStatus(
             resultadoApi.status.toString(), StatusEnum.error.toString()) ==
@@ -24,7 +27,8 @@ class TransfiyaRepositoryAdapter implements TransfiyaRepository {
   @override
   Future<RespuestaCosultarTransacciones?> consultarTransacciones(
       ParametrosConsultarTransacciones params) async {
-    final resultadoApi = await dataSource.consultarTransacciones(params);
+    final resultadoApi =
+        await consultarTransaccionesApiSource.consultarTransaciones(params);
 
     if (ValidateStatusEnum.validateStatus(
             resultadoApi.status.toString(), StatusEnum.error.toString()) ==

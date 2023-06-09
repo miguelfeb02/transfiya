@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
-import '../../../data/models/base/resultado.dart';
+import '../../../data/models/a_base/resultado.dart';
 import '../../../data/utils/seguridad/cipher/cipher_object.dart';
 import '../../config/transfiya_constants.dart';
 import '../../../data/utils/conectivity.dart';
@@ -14,13 +14,11 @@ import 'enums/http_methods_enum.dart';
 import 'enums/type_response_enum.dart';
 
 class ApiSourceResponse {
-  final String? baseUrl;
   final http.Client client;
   final MyConnectivity connectivity;
   final MySingletonSharedPreferences singletonSharedPreferences;
 
   ApiSourceResponse(
-    this.baseUrl,
     this.client,
     this.connectivity,
     this.singletonSharedPreferences,
@@ -298,10 +296,10 @@ class ApiSourceResponse {
   }
 
   void saveToken(String? token) {
-    singletonSharedPreferences.token = token;
+    singletonSharedPreferences.uuid = token;
   }
 
   String? getToken() {
-    return singletonSharedPreferences.token;
+    return singletonSharedPreferences.uuid;
   }
 }
