@@ -4,28 +4,14 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
-// Constantes
-import 'package:sucursal_virtual_personas/entry_point/application/config/index.dart'
-    show AppConstants;
-
-// Enumeraciones
-import 'package:sucursal_virtual_personas/entry_point/data_source/api/base/enums/index.dart'
-    show HttpMethodsEnum, TypeResponseEnum;
-
-// Strings para los errores
-import 'package:sucursal_virtual_personas/entry_point/data_source/api/base/api_base_strings.dart';
-
-// Modelos
-import 'package:sucursal_virtual_personas/core/models/index.dart'
-    show Resultado;
-
-// Utilidades
-import 'package:sucursal_virtual_personas/core/index.dart'
-    show
-        CipherObject,
-        MyConnectivity,
-        MySingletonSharedPreferences,
-        MySingletonSharedPreferencesImpl;
+import '../../../data/models/base/resultado.dart';
+import '../../../data/utils/seguridad/cipher/cipher_object.dart';
+import '../../config/transfiya_constants.dart';
+import '../../ui/shared/utils/conectivity.dart';
+import '../../ui/shared/utils/singleton_share_preferences.dart';
+import 'api_base_strings.dart';
+import 'enums/http_methods_enum.dart';
+import 'enums/type_response_enum.dart';
 
 class ApiSourceResponse {
   final String? baseUrl;
@@ -56,7 +42,7 @@ class ApiSourceResponse {
       headers = getHeaders(headers, xBody: xBody, authorization: autorization);
       var response = await client
           .get(Uri.parse(url), headers: headers)
-          .timeout(AppConstants.DURACION_CONSUMO_APIS);
+          .timeout(TransfiyaConstants.duracionConsumoApi);
       return await _manageResponse<T>(response, url, mapperFunction,
           HttpMethodsEnum.GET, null, typeResponse, autorization ?? '');
     } catch (ex, stacktrace) {
@@ -89,7 +75,7 @@ class ApiSourceResponse {
       http.Response response = await client
           .post(Uri.parse(url),
               body: body != null ? json.encode(body) : null, headers: headers)
-          .timeout(AppConstants.DURACION_CONSUMO_APIS);
+          .timeout(TransfiyaConstants.duracionConsumoApi);
       return await _manageResponse<Respuesta>(response, url, mapperFunction,
           HttpMethodsEnum.POST, body, typeResponse, autorization ?? '');
     } catch (ex) {
@@ -120,7 +106,7 @@ class ApiSourceResponse {
       http.Response response = await client
           .put(Uri.parse(url),
               body: body != null ? json.encode(body) : null, headers: headers)
-          .timeout(AppConstants.DURACION_CONSUMO_APIS);
+          .timeout(TransfiyaConstants.duracionConsumoApi);
       return await _manageResponse<Respuesta>(response, url, mapperFunction,
           HttpMethodsEnum.POST, body, typeResponse, autorization ?? '');
     } catch (ex) {
@@ -140,8 +126,7 @@ class ApiSourceResponse {
   ) async {
     try {
       _logResponse(response);
-      if (AppConstants.CODIGOS_HTTP_ERRORES_LOGICA
-          .contains(response.statusCode)) {
+      if (TransfiyaConstants.codigosHttp.contains(response.statusCode)) {
         Map? responseMap = _decodeJson(response.body);
         return _decodeBodyWithTypeResponse<Respuesta>(
           typeResponse,
@@ -149,10 +134,6 @@ class ApiSourceResponse {
           mapperFunction,
           autorization,
         );
-      }
-
-      if (response.statusCode == 401) {
-        MySingletonSharedPreferencesImpl().$logoutController?.add(true);
       }
 
       return _manageError<Respuesta>(response, autorization);
@@ -298,12 +279,10 @@ class ApiSourceResponse {
   Map<String, String> getHeaders(Map<String, String>? headers,
       {String? xBody, String? authorization}) {
     headers = headers ?? <String, String>{};
-    //headers = setHeaderToken(headers);
-    headers = setHeaderCurrentPage(headers);
+
     headers[HttpHeaders.contentTypeHeader] = "application/json; charset=utf-8";
     headers[HttpHeaders.acceptCharsetHeader] = "charset=UTF-8";
     headers[HttpHeaders.acceptHeader] = "application/json; charset=UTF-8";
-    //headers[HttpHeaders.userAgentHeader] = "Hola Jorge U+1F601";
     headers['X-Body'] = xBody ?? '';
     headers['X-Requester'] = 'SVC';
     headers['Authorization'] = authorization ?? '';
@@ -318,23 +297,11 @@ class ApiSourceResponse {
     return headers;
   }
 
-  Map<String, String> setHeaderCurrentPage(Map<String, String> headers) {
-    var currentPage = getCurrentPage();
-    if (currentPage != null) {
-      headers["X-Auditoria-Url"] = currentPage;
-    }
-    return headers;
-  }
-
   void saveToken(String? token) {
     singletonSharedPreferences.token = token;
   }
 
   String? getToken() {
     return singletonSharedPreferences.token;
-  }
-
-  String? getCurrentPage() {
-    return singletonSharedPreferences.paginaActual;
   }
 }

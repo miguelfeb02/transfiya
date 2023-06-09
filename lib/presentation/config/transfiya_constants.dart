@@ -3,4 +3,5 @@ class TransfiyaConstants {
   static const Duration duracionConsumoApi = Duration(seconds: 120);
   static const Duration duracionInactividad = Duration(minutes: 4);
   static const String appTimeZone = 'America/Bogota';
+  static const List<int> codigosHttp = [200, 409];
 }

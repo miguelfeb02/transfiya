@@ -3,25 +3,13 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-
-// Constantes
-import 'package:sucursal_virtual_personas/entry_point/application/config/index.dart'
-    show AppConstants;
-
-// Enumeraciones
-import 'package:sucursal_virtual_personas/entry_point/data_source/api/base/enums/index.dart'
-    show HttpMethodsEnum, TypeResponseEnum;
-
-// Strings para los errores
-import 'package:sucursal_virtual_personas/entry_point/data_source/api/base/api_base_strings.dart';
-
-// Modelos
-import 'package:sucursal_virtual_personas/core/models/index.dart'
-    show RefrescarTokenDomain, Resultado;
-
-// Utilidades
-import 'package:sucursal_virtual_personas/core/index.dart'
-    show MyConnectivity, MySingletonSharedPreferences, RefrescarTokenPresenter;
+import '../../../data/models/base/resultado.dart';
+import '../../config/transfiya_constants.dart';
+import '../../ui/shared/utils/conectivity.dart';
+import '../../ui/shared/utils/singleton_share_preferences.dart';
+import 'api_base_strings.dart';
+import 'enums/http_methods_enum.dart';
+import 'enums/type_response_enum.dart';
 
 class ApiSource {
   final String? baseUrl;
@@ -50,7 +38,7 @@ class ApiSource {
       headers = getHeaders(headers);
       var response = await client
           .get(Uri.parse(url), headers: headers)
-          .timeout(AppConstants.DURACION_CONSUMO_APIS);
+          .timeout(TransfiyaConstants.duracionConsumoApi);
       return await _manageResponse<T>(response, url, mapperFunction,
           HttpMethodsEnum.GET, null, typeResponse);
     } catch (ex) {
@@ -80,7 +68,7 @@ class ApiSource {
       http.Response response = await client
           .post(Uri.parse(url),
               body: body != null ? json.encode(body) : null, headers: headers)
-          .timeout(AppConstants.DURACION_CONSUMO_APIS);
+          .timeout(TransfiyaConstants.duracionConsumoApi);
       return await _manageResponse<T>(response, url, mapperFunction,
           HttpMethodsEnum.POST, body, typeResponse);
     } catch (ex) {
@@ -105,7 +93,7 @@ class ApiSource {
       log(json.encode(body), name: 'requestBody');
       var response = await client
           .put(Uri.parse(url), body: json.encode(body), headers: headers)
-          .timeout(AppConstants.DURACION_CONSUMO_APIS);
+          .timeout(TransfiyaConstants.duracionConsumoApi);
       return await _manageResponse<T>(response, url, mapperFunction,
           HttpMethodsEnum.PUT, body, typeResponse);
     } catch (ex) {
@@ -128,7 +116,7 @@ class ApiSource {
       headers = getHeaders(headers);
       var response = await client
           .delete(Uri.parse(url), headers: headers)
-          .timeout(AppConstants.DURACION_CONSUMO_APIS);
+          .timeout(TransfiyaConstants.duracionConsumoApi);
       return await _manageResponse<T>(response, url, mapperFunction,
           HttpMethodsEnum.DELETE, null, typeResponse);
     } catch (ex) {
@@ -156,20 +144,7 @@ class ApiSource {
           mapperFunction,
         );
       }
-      if (response.statusCode == 401) {
-        return await _refreshToken<T>(() {
-          switch (method) {
-            case HttpMethodsEnum.POST:
-              return postApi<T>(url, body, mapperFunction);
-            case HttpMethodsEnum.PUT:
-              return putApi<T>(url, body, mapperFunction);
-            case HttpMethodsEnum.DELETE:
-              return deleteApi<T>(url, mapperFunction);
-            default: // HttpMethodsEnum.GET
-              return getApi<T>(url, mapperFunction);
-          }
-        });
-      }
+
       return _manageError<T>(response);
     } on Exception catch (ex) {
       log('No fue posible procesar la respuesta - ${ex.toString()}',
@@ -256,52 +231,6 @@ class ApiSource {
     }
   }
 
-  Future<Resultado<T>> _refreshToken<T>(
-      Future<Resultado<T>> Function() function) async {
-    var url = '$baseUrl/${AppConstants.APP_SUCURSAL}/login/refrescar-token';
-    log(url, name: 'refrescar-token');
-
-    var data = RefrescarTokenPresenter();
-    data.tokenActual = getToken();
-    Map<String, String?> headers = getHeaders(null);
-
-    http.Response response = await client
-        .post(Uri.parse(url),
-            body: json.encode(data.toJson()),
-            headers: headers as Map<String, String>?)
-        .timeout(AppConstants.DURACION_CONSUMO_APIS);
-
-    if (_validarGuardarToken(response)) {
-      return function();
-    } else {
-      singletonSharedPreferences.$logoutController!.add(true);
-      return Resultado<T>.unauthorized(
-          message: ApiBaseStrings.unauthorized, code: 401);
-    }
-  }
-
-  bool _validarGuardarToken(http.Response response) {
-    if (response.statusCode == 200) {
-      RefrescarTokenDomain? refrescarTokenDomain = response.body.trim().isEmpty
-          ? null
-          : RefrescarTokenDomain.fromJson(
-              _decodeJson(response.body),
-            );
-      return _validarTokenRefrescado(refrescarTokenDomain);
-    } else {
-      return false;
-    }
-  }
-
-  bool _validarTokenRefrescado(RefrescarTokenDomain? refrescarTokenDomain) {
-    if ((refrescarTokenDomain != null && refrescarTokenDomain.refrescado!)) {
-      saveToken(refrescarTokenDomain.token);
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   dynamic _decodeJson(String body) {
     try {
       return json.decode(body);
@@ -328,10 +257,6 @@ class ApiSource {
       {String? xBody, String? authorization}) {
     headers = headers ?? <String, String>{};
     headers = setHeaderToken(headers);
-    // headers = setHeaderCurrentPage(headers);
-    // headers[HttpHeaders.contentTypeHeader] = "application/json; charset=utf-8";
-    // headers[HttpHeaders.acceptCharsetHeader] = "charset=UTF-8";
-    // headers[HttpHeaders.acceptHeader] = "application/json; charset=UTF-8";
     headers['X-Body'] = xBody ?? '';
     headers['Authorization'] = authorization ?? '';
 
@@ -346,23 +271,11 @@ class ApiSource {
     return headers;
   }
 
-  Map<String, String> setHeaderCurrentPage(Map<String, String> headers) {
-    var currentPage = getCurrentPage();
-    if (currentPage != null) {
-      headers["X-Auditoria-Url"] = currentPage;
-    }
-    return headers;
-  }
-
   void saveToken(String? token) {
     singletonSharedPreferences.token = token;
   }
 
   String? getToken() {
     return singletonSharedPreferences.token;
-  }
-
-  String? getCurrentPage() {
-    return singletonSharedPreferences.paginaActual;
   }
 }
