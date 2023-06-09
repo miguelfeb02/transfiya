@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../utils/index.dart';
+import '../../../../../../data/utils/singleton_share_preferences.dart';
 
 class TextFieldCustomStreamWidget extends StatefulWidget {
   final Stream<String> stream;
