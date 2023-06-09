@@ -3,9 +3,9 @@ import '../../../data/index.dart';
 import '../../../domain/index.dart';
 import '../../index.dart';
 
-class ActivarUsuarioApiSourceAdapter extends ApiSourceResponse
-    implements ActivarUsuarioApiSource {
-  ActivarUsuarioApiSourceAdapter(
+class ConsultarTransaccionesApiSourceAdapter extends ApiSourceResponse
+    implements ConsultarTransaccionesApiSource {
+  ConsultarTransaccionesApiSourceAdapter(
     String uuid,
     String baseUrl,
     http.Client client,
@@ -14,13 +14,14 @@ class ActivarUsuarioApiSourceAdapter extends ApiSourceResponse
   ) : super(uuid, baseUrl, client, connectivity, sharedPreferences);
 
   @override
-  Future<Resultado<bool?>> activarUsuario(
-      ParametrosActivarUsuario params) async {
+  Future<Resultado<RespuestaCosultarTransacciones>> consultarTransacciones(
+      ParametrosConsultarTransacciones params) async {
     var url = '$baseUrl/activar-usuario';
 
     return await getApi(url, (value) {
       if (value?.containsKey("respuesta") && value?["respuesta"] != null) {}
-      return true;
+      return RespuestaCosultarTransacciones(
+          transacciones: [], usuarioActivo: true);
     }, autorization: uuid);
   }
 }

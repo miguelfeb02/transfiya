@@ -14,11 +14,15 @@ import 'enums/http_methods_enum.dart';
 import 'enums/type_response_enum.dart';
 
 class ApiSourceResponse {
+  final String? uuid;
+  final String? baseUrl;
   final http.Client client;
   final MyConnectivity connectivity;
   final MySingletonSharedPreferences singletonSharedPreferences;
 
   ApiSourceResponse(
+    this.uuid,
+    this.baseUrl,
     this.client,
     this.connectivity,
     this.singletonSharedPreferences,

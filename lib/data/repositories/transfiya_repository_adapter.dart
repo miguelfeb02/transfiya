@@ -28,7 +28,7 @@ class TransfiyaRepositoryAdapter implements TransfiyaRepository {
   Future<RespuestaCosultarTransacciones?> consultarTransacciones(
       ParametrosConsultarTransacciones params) async {
     final resultadoApi =
-        await consultarTransaccionesApiSource.consultarTransaciones(params);
+        await consultarTransaccionesApiSource.consultarTransacciones(params);
 
     if (ValidateStatusEnum.validateStatus(
             resultadoApi.status.toString(), StatusEnum.error.toString()) ==
