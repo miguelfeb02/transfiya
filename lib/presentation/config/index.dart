@@ -1,1 +1,1 @@
-export './transfiya_constants.dart';
+export './constants/index.dart';
