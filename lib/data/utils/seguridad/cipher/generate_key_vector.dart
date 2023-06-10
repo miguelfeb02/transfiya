@@ -1,6 +1,6 @@
 import 'package:timezone/standalone.dart' as tz;
 
-import '../../../../presentation/config/transfiya_constants.dart';
+import '../../../../presentation/config/constants/transfiya_constants.dart';
 
 class GenerateKeyVector {
   String generarKey(String uuid, String length, int intentos) {

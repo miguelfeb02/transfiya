@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 import '../../../data/models/a_base/resultado.dart';
 import '../../../data/utils/seguridad/cipher/cipher_object.dart';
-import '../../config/transfiya_constants.dart';
+import '../../config/constants/transfiya_constants.dart';
 import '../../../data/utils/conectivity.dart';
 import '../../../data/utils/singleton_share_preferences.dart';
 import 'api_base_strings.dart';
