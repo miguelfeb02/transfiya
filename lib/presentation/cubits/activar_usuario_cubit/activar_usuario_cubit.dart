@@ -1,19 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:transfiya_lib/domain/index.dart';
-import 'activar_usuario_states.dart';
+import 'package:transfiya_lib/presentation/cubits/activar_usuario_cubit/index.dart';
 
-class ActivarUsuarioBloc extends Cubit<ActivarUsuarioState> {
+class ActivarUsuarioCubit extends Cubit<ActivarUsuarioState> {
   final ActivarUsuarioUseCase activarUsuarioUseCase;
 
-  ActivarUsuarioBloc(
+  ActivarUsuarioCubit(
     this.activarUsuarioUseCase,
-  ) : super(const ActivarUsuarioState(
-          telefono: "",
-          aceptaTerminos: "",
-        ));
+  ) : super(ActivarUsuarioState());
 
   void onTelefonoChanged(String value) {
-    emit(state.copyWith(telefono: value));
+    emit(state.copyWith(telefono: TelefonoField.validated(value)));
   }
 
   void aceptarTerminosChangedChanged(String value) {

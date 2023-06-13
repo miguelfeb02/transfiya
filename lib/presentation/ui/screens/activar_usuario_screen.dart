@@ -1,8 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:transfiya_lib/presentation/blocs/index.dart';
+import 'package:transfiya_lib/presentation/cubits/index.dart';
+
+import '../shared/utils/index.dart';
 
 class ActivarUsuarioScreen extends StatefulWidget {
   const ActivarUsuarioScreen({
@@ -16,20 +16,24 @@ class ActivarUsuarioScreen extends StatefulWidget {
 class _ActivarUsuarioScreenState extends State<ActivarUsuarioScreen> {
   @override
   Widget build(BuildContext context) {
-    final numero = context.watch<ActivarUsuarioBloc>().state.telefono ?? "";
+    final numero = context.watch<ActivarUsuarioCubit>().state.telefono;
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(numero),
+            TextField(
+              onChanged: (value) {
+                setearTelefono(value);
+              },
+              decoration: InputDecoration(
+                  errorText: ValidadorMap().mapperError(numero.displayError)),
+            ),
             const SizedBox(
               height: 30,
             ),
             FloatingActionButton(
-              onPressed: () {
-                setearTelefono(Random().nextInt(999999999).toString());
-              },
+              onPressed: () {},
             )
           ],
         ),
@@ -38,6 +42,6 @@ class _ActivarUsuarioScreenState extends State<ActivarUsuarioScreen> {
   }
 
   setearTelefono(String value) {
-    context.read<ActivarUsuarioBloc>().onTelefonoChanged(value);
+    context.read<ActivarUsuarioCubit>().onTelefonoChanged(value);
   }
 }
