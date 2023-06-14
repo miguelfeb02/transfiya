@@ -2,22 +2,23 @@
 
 import 'dart:convert';
 
-class ParametrosActivarUsuario {
+class ParametrosActivarUsuarioRemoteModel {
   String celular;
   bool aceptarTerminosYCondiciones;
 
-  ParametrosActivarUsuario({
+  ParametrosActivarUsuarioRemoteModel({
     required this.celular,
     required this.aceptarTerminosYCondiciones,
   });
 
-  factory ParametrosActivarUsuario.fromRawJson(String str) =>
-      ParametrosActivarUsuario.fromJson(json.decode(str));
+  factory ParametrosActivarUsuarioRemoteModel.fromRawJson(String str) =>
+      ParametrosActivarUsuarioRemoteModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ParametrosActivarUsuario.fromJson(Map<String, dynamic> json) =>
-      ParametrosActivarUsuario(
+  factory ParametrosActivarUsuarioRemoteModel.fromJson(
+          Map<String, dynamic> json) =>
+      ParametrosActivarUsuarioRemoteModel(
         celular: json["celular"],
         aceptarTerminosYCondiciones: json["aceptarTerminosYCondiciones"],
       );
