@@ -10,3 +10,13 @@ class TelefonoField extends FormzInput<String, ErrorValidadorEnum> {
     return Validadores().validarTelefono(value);
   }
 }
+
+class NombreField extends FormzInput<String, ErrorValidadorEnum> {
+  const NombreField.pure([String value = '']) : super.pure(value);
+  const NombreField.validated([String value = '']) : super.dirty(value);
+
+  @override
+  ErrorValidadorEnum? validator(String value) {
+    return Validadores().validarNombre(value);
+  }
+}

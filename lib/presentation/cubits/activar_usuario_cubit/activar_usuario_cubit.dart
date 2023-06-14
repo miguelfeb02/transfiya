@@ -10,10 +10,15 @@ class ActivarUsuarioCubit extends Cubit<ActivarUsuarioState> {
   ) : super(ActivarUsuarioState());
 
   void onTelefonoChanged(String value) {
-    emit(state.copyWith(telefono: TelefonoField.validated(value)));
+    emit(state.copyWith(telefono: TelefonoField.pure(value)));
   }
 
-  void aceptarTerminosChangedChanged(String value) {
+  void onAceptarTerminosChangedChanged(String value) {
     emit(state.copyWith(aceptaTerminos: value));
+  }
+
+  void onSubmit() {
+    emit(state.copyWith(
+        telefono: TelefonoField.validated(state.telefono.value)));
   }
 }

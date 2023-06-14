@@ -10,4 +10,14 @@ class Validadores {
       return null;
     }
   }
+
+  validarNombre(String value) {
+    if (value.isEmpty) {
+      return ErrorValidadorEnum.empty;
+    } else if (value.length < 10) {
+      return ErrorValidadorEnum.minLength;
+    } else {
+      return null;
+    }
+  }
 }

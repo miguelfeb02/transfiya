@@ -33,7 +33,7 @@ class _ActivarUsuarioScreenState extends State<ActivarUsuarioScreen> {
               height: 30,
             ),
             FloatingActionButton(
-              onPressed: () {},
+              onPressed: onSubmit,
             )
           ],
         ),
@@ -43,5 +43,9 @@ class _ActivarUsuarioScreenState extends State<ActivarUsuarioScreen> {
 
   setearTelefono(String value) {
     context.read<ActivarUsuarioCubit>().onTelefonoChanged(value);
+  }
+
+  onSubmit() {
+    context.read<ActivarUsuarioCubit>().onSubmit();
   }
 }
