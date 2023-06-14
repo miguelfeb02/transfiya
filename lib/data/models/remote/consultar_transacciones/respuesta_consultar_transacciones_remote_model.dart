@@ -1,23 +1,24 @@
 import 'dart:convert';
 
-class RespuestaConsultarTransacciones {
-  List<Transacciones> transacciones;
+class RespuestaConsultarTransaccionesRemoteModel {
+  List<TransaccionesRemoteModel> transacciones;
   bool usuarioActivo;
 
-  RespuestaConsultarTransacciones({
+  RespuestaConsultarTransaccionesRemoteModel({
     required this.transacciones,
     required this.usuarioActivo,
   });
 
-  factory RespuestaConsultarTransacciones.fromRawJson(String str) =>
-      RespuestaConsultarTransacciones.fromJson(json.decode(str));
+  factory RespuestaConsultarTransaccionesRemoteModel.fromRawJson(String str) =>
+      RespuestaConsultarTransaccionesRemoteModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory RespuestaConsultarTransacciones.fromJson(Map<String, dynamic> json) =>
-      RespuestaConsultarTransacciones(
-        transacciones: List<Transacciones>.from(
-            json["transacciones"].map((x) => Transacciones.fromJson(x))),
+  factory RespuestaConsultarTransaccionesRemoteModel.fromJson(
+          Map<String, dynamic> json) =>
+      RespuestaConsultarTransaccionesRemoteModel(
+        transacciones: List<TransaccionesRemoteModel>.from(json["transacciones"]
+            .map((x) => TransaccionesRemoteModel.fromJson(x))),
         usuarioActivo: json["usuarioActivo"],
       );
 
@@ -28,7 +29,7 @@ class RespuestaConsultarTransacciones {
       };
 }
 
-class Transacciones {
+class TransaccionesRemoteModel {
   String transferId;
   dynamic txId;
   String txRef;
@@ -50,7 +51,7 @@ class Transacciones {
   String status;
   String description;
 
-  Transacciones({
+  TransaccionesRemoteModel({
     required this.transferId,
     required this.txId,
     required this.txRef,
@@ -73,12 +74,13 @@ class Transacciones {
     required this.description,
   });
 
-  factory Transacciones.fromRawJson(String str) =>
-      Transacciones.fromJson(json.decode(str));
+  factory TransaccionesRemoteModel.fromRawJson(String str) =>
+      TransaccionesRemoteModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Transacciones.fromJson(Map<String, dynamic> json) => Transacciones(
+  factory TransaccionesRemoteModel.fromJson(Map<String, dynamic> json) =>
+      TransaccionesRemoteModel(
         transferId: json["transferId"],
         txId: json["txId"],
         txRef: json["txRef"],

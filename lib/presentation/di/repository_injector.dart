@@ -14,7 +14,9 @@ class RepositoryInjector {
 
   TransfiyaRepository provideTransfiyaRepository() {
     return TransfiyaRepositoryAdapter(
-        DataSourceInjector().provideActivarUsuarioApiSource(),
-        DataSourceInjector().provideConsultarTransaccionesApiSource());
+      DataSourceInjector().provideActivarUsuarioApiSource(),
+      DataSourceInjector().provideConsultarTransaccionesApiSource(),
+      DataSourceInjector().provideConsultarNumerosApiSource(),
+    );
   }
 }

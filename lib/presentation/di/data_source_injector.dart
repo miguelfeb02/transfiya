@@ -30,4 +30,14 @@ class DataSourceInjector {
       MySingleton(),
     );
   }
+
+  ConsultarNumerosApiSource provideConsultarNumerosApiSource() {
+    return ConsultarNumerosApiSourceAdapter(
+      MySingleton().baseUrl ?? "",
+      MySingleton().uuid ?? "",
+      http.Client(),
+      MyConnectivityImpl(),
+      MySingleton(),
+    );
+  }
 }

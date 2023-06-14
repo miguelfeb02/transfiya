@@ -21,4 +21,9 @@ class Injector {
     return ConsultarTransaccionesUseCase(
         RepositoryInjector().provideTransfiyaRepository());
   }
+
+  ConsultarNumerosUseCase provideConsultarNumerosUseCase() {
+    return ConsultarNumerosUseCase(
+        RepositoryInjector().provideTransfiyaRepository());
+  }
 }

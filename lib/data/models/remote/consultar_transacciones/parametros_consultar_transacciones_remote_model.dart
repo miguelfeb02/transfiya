@@ -2,23 +2,23 @@
 
 import 'dart:convert';
 
-class ParametrosConsultarTransacciones {
+class ParametrosConsultarTransaccionesRemoteModel {
   String tipo;
   String estado;
 
-  ParametrosConsultarTransacciones({
+  ParametrosConsultarTransaccionesRemoteModel({
     required this.tipo,
     required this.estado,
   });
 
-  factory ParametrosConsultarTransacciones.fromRawJson(String str) =>
-      ParametrosConsultarTransacciones.fromJson(json.decode(str));
+  factory ParametrosConsultarTransaccionesRemoteModel.fromRawJson(String str) =>
+      ParametrosConsultarTransaccionesRemoteModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ParametrosConsultarTransacciones.fromJson(
+  factory ParametrosConsultarTransaccionesRemoteModel.fromJson(
           Map<String, dynamic> json) =>
-      ParametrosConsultarTransacciones(
+      ParametrosConsultarTransaccionesRemoteModel(
         tipo: json["tipo"],
         estado: json["estado"],
       );
