@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import '../../../../data/index.dart';
+import '../../../../data/utils/seguridad/cipher/cipher_object.dart';
 import '../../../../domain/index.dart';
 import '../../../index.dart';
 
@@ -15,12 +16,21 @@ class ActivarUsuarioApiSourceAdapter extends ApiSourceResponse
 
   @override
   Future<Resultado<bool?>> activarUsuario(
-      ParametrosActivarUsuario params) async {
+      ParametrosActivarUsuarioRemoteModel params) async {
     var url = '$baseUrl/activar-usuario';
-
+    final xBody = _cipherEncryptParametros(uuid!, params);
     return await getApi(url, (value) {
-      if (value?.containsKey("respuesta") && value?["respuesta"] != null) {}
-      return true;
-    }, autorization: uuid);
+      return _cipherDecriptRespuesta(uuid!, value?["respuesta"]);
+    }, xBody: xBody, autorization: uuid);
+  }
+
+  String _cipherEncryptParametros(
+      String uuid, ParametrosActivarUsuarioRemoteModel params) {
+    return CipherObject.encryptObject(uuid, params.toRawJson());
+  }
+
+  bool _cipherDecriptRespuesta(String uuid, String encrypt) {
+    String decrypt = CipherObject.decryptObject(uuid, encrypt);
+    return decrypt == "true";
   }
 }

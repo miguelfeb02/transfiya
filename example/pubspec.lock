@@ -358,6 +358,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.2"
+  unicons:
+    dependency: "direct main"
+    description:
+      name: unicons
+      sha256: ac02b8f30d48cc369f668a65c950e7a951f593c8907ded730ed4f94b3575cc2c
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   vector_math:
     dependency: transitive
     description:

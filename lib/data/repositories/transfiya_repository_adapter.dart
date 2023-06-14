@@ -11,7 +11,8 @@ class TransfiyaRepositoryAdapter implements TransfiyaRepository {
 
 // REPOSITORY ADAPTER ACTIVAR USUARIO
   @override
-  Future<bool?> activarUsuario(ParametrosActivarUsuario params) async {
+  Future<bool?> activarUsuario(
+      ParametrosActivarUsuarioRemoteModel params) async {
     final resultadoApi = await activarUsuarioApiSource.activarUsuario(params);
 
     if (ValidateStatusEnum.validateStatus(

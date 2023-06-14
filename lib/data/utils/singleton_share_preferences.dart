@@ -11,13 +11,21 @@ abstract class MySingletonSharedPreferences {
 
   set baseUrl(String? baseUrl);
 
-  Color? get primaryColorLigth => primaryColorLigth;
+  Color? get colorPrincipal => colorPrincipal;
 
-  set primaryColorLigth(Color? primaryColorLigth);
+  set colorPrincipal(Color? colorPrincipal);
 
-  Color? get primaryColorDark => primaryColorDark;
+  Color? get colorSecundario => colorSecundario;
 
-  set primaryColorDark(Color? primaryColorDark);
+  set colorSecundario(Color? colorSecundario);
+
+  Color? get colorError => colorError;
+
+  set colorError(Color? colorError);
+
+  Color? get colorTexto => colorTexto;
+
+  set colorTexto(Color? colorTexto);
 }
 
 class MySingleton implements MySingletonSharedPreferences {
@@ -36,8 +44,14 @@ class MySingleton implements MySingletonSharedPreferences {
   String? baseUrl;
 
   @override
-  Color? primaryColorLigth;
+  Color? colorPrincipal;
 
   @override
-  Color? primaryColorDark;
+  Color? colorSecundario;
+
+  @override
+  Color? colorError;
+
+  @override
+  Color? colorTexto;
 }
